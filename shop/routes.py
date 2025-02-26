@@ -26,6 +26,49 @@ def forecasting():
 def work_centers():
     return render_template('work_centers.html')
 
+@app.route('/purchase')
+def purchase():
+    return render_template('purchase.html')
+
+@app.route('/api/purchase')
+def get_purchase_data():
+    purchase_orders = []
+    for job in db.session.query(Job).all():
+        for wo in job.work_orders:
+            if hasattr(wo, 'purchase_order'):
+                purchase_orders.append({
+                    'po_number': wo.purchase_order,
+                    'material': wo.material,
+                    'quantity': wo.quantity,
+                    'delivery_date': wo.delivery_date.strftime('%Y-%m-%d') if wo.delivery_date else 'N/A',
+                    'status': wo.status,
+                    'value': wo.value or 0
+                })
+
+    metrics = {
+        'open_pos': len([po for po in purchase_orders if po['status'] == 'Open']),
+        'total_value': sum(po['value'] for po in purchase_orders),
+        'pending_deliveries': len([po for po in purchase_orders if po['status'] in ['Open', 'In Transit']]),
+        'late_deliveries': len([po for po in purchase_orders if po['status'] == 'Delayed']),
+        'status_distribution': [
+            len([po for po in purchase_orders if po['status'] == 'Open']),
+            len([po for po in purchase_orders if po['status'] == 'In Transit']),
+            len([po for po in purchase_orders if po['status'] == 'Delivered']),
+            len([po for po in purchase_orders if po['status'] == 'Delayed'])
+        ]
+    }
+
+    timeline_data = {
+        'dates': [],
+        'quantities': []
+    }
+    
+    return jsonify({
+        'purchase_orders': purchase_orders,
+        'metrics': metrics,
+        'timeline': timeline_data
+    })
+
 @app.route('/api/jobs')
 def get_jobs():
     """Fetch all jobs with work orders & operations"""
