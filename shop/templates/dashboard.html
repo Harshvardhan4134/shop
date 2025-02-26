@@ -1,0 +1,171 @@
+{% extends "base.html" %}
+
+{% block content %}
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<!-- Data Import Section -->
+<div class="row mb-4">
+    <div class="col-12 col-sm-12 col-md-6 col-lg-4">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Data Import</h5>
+                <div id="uploadStatus" class="text-muted" style="display: none;">
+                    <span class="spinner-border spinner-border-sm" role="status"></span>
+                    Processing...
+                </div>
+            </div>
+            <div class="card-body">
+                <form id="uploadForm" action="/upload" method="POST" enctype="multipart/form-data" class="form-inline">
+                    <div class="input-group mb-2">
+                        <input type="file" class="form-control" id="sapdata" name="file" accept=".xlsx" required>
+                        <button class="btn btn-primary mb-2" type="submit" id="uploadButton">
+                            Upload SAPDATA
+                        </button>
+                    </div>
+                    <small class="text-muted mt-2 d-block">Please select an Excel (.xlsx) file containing SAPDATA</small>
+                </form>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Status Cards -->
+<div class="row mb-4">
+    <div class="col-12 col-md-3">
+        <div class="card border-success">
+            <div class="card-body">
+                <h6 class="card-subtitle mb-2 text-muted">Jobs in Progress</h6>
+                <h2 class="card-title d-flex align-items-center">
+                    <span id="activeJobs">--</span>
+                    <span class="ms-2 fs-4">🟢</span>
+                </h2>
+                <p class="card-text text-success mb-0">Active</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-info">
+            <div class="card-body">
+                <h6 class="card-subtitle mb-2 text-muted">Jobs Completed Today</h6>
+                <h2 class="card-title d-flex align-items-center">
+                    <span id="completedToday">--</span>
+                    <span class="ms-2 fs-4">✅</span>
+                </h2>
+                <p class="card-text text-info mb-0">Done</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-danger">
+            <div class="card-body">
+                <h6 class="card-subtitle mb-2 text-muted">Work Centers Overloaded</h6>
+                <h2 class="card-title d-flex align-items-center">
+                    <span id="overloadedCenters">--</span>
+                    <span class="ms-2 fs-4">🔴</span>
+                </h2>
+                <p class="card-text text-danger mb-0">Critical</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-warning">
+            <div class="card-body">
+                <h6 class="card-subtitle mb-2 text-muted">Pending Jobs (Due Soon)</h6>
+                <h2 class="card-title d-flex align-items-center">
+                    <span id="pendingJobs">--</span>
+                    <span class="ms-2 fs-4">⚠️</span>
+                </h2>
+                <p class="card-text text-warning mb-0">Due within 7 days</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Charts and Metrics -->
+<div class="row">
+    <div class="col-12 col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Work Center Overview</h5>
+            </div>
+            <div class="card-body">
+                <canvas id="workCenterChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Efficiency Metrics</h5>
+            </div>
+            <div class="card-body">
+                <div id="efficiencyMetrics"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Upcoming Deadlines -->
+<div class="row mb-4">
+    <div class="col-12 col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Upcoming Deadlines</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Job Number</th>
+                                <th>Work Order</th>
+                                <th>Due Date</th>
+                                <th>Status</th>
+                                <th>Priority</th>
+                            </tr>
+                        </thead>
+                        <tbody id="upcomingDeadlinesTable"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Active Jobs Table -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Active Jobs</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Job Number</th>
+                                <th>Work Order</th>
+                                <th>Operation</th>
+                                <th>Work Center</th>
+                                <th>Status</th>
+                                <th>Progress</th>
+                            </tr>
+                        </thead>
+                        <tbody id="activeJobsTable">
+                            <tr>
+                                <td colspan="6" class="text-center">Loading...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}
+</create_file>

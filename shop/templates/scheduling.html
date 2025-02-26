@@ -1,0 +1,68 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Unscheduled Jobs</h5>
+            </div>
+            <div class="card-body">
+                <div id="unscheduledJobs" class="list-group">
+                    <!-- Jobs will be populated here -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-9">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Schedule</h5>
+            </div>
+            <div class="card-body">
+                <div id="calendar"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Job Scheduling Modal -->
+<div class="modal fade" id="jobModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Schedule Job</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="jobTitle" class="form-label">Job</label>
+                    <input type="text" class="form-control" id="jobTitle" readonly>
+                </div>
+                <div class="mb-3">
+                    <label for="employee" class="form-label">Assign To</label>
+                    <select class="form-control" id="employee">
+                        <option value="">Select Employee</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="hours" class="form-label">Hours</label>
+                    <input type="number" class="form-control" id="hours">
+                </div>
+                <div class="mb-3">
+                    <label for="scheduleDate" class="form-label">Date</label>
+                    <input type="date" class="form-control" id="scheduleDate">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="saveSchedule">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/scheduling.js') }}"></script>
+{% endblock %}

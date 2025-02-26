@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12 col-sm-12 col-md-6">
+
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Work Hours Forecast</h5>
+            </div>
+            <div class="card-body">
+                <canvas id="forecastChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12 col-sm-12">
+
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Forecast Details</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Work Center</th>
+                                <th>Planned Hours</th>
+                                <th>Actual Hours</th>
+                                <th>Forecasted Hours</th>
+                                <th>Remaining Hours</th>
+                            </tr>
+                        </thead>
+                        <tbody id="forecastTable">
+                            <tr>
+                                <td colspan="5" class="text-center">Loading...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/forecasting.js') }}"></script>
+{% endblock %}
